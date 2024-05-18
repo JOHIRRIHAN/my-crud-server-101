@@ -54,6 +54,35 @@ async function run() {
       res.send(result);
 
     })
+
+    // six step data update 
+    app.get('/users/:id', async(req, res)=>{
+      const id = req.params.id;
+      const query = {_id: new ObjectId(id)}
+      const result = await userCollection.findOne(query);
+      console.log(result)
+      res.send(result);
+
+    })
+
+    // seven step data update 
+    app.put('/users/:id', async(req, res)=>{
+      const id = req.params.id;
+      const data = req.body;
+      const options = {upsert: true}
+      const filter = {_id: new ObjectId(id)}
+      const updatedUser = {
+        $set: {
+          name: data.name,
+          email: data.email,
+          password: data.password
+        }
+      }
+      const result = await userCollection.updateOne(filter, updatedUser, options);
+      console.log(result)
+      res.send(result);
+
+    })
     
 
 
